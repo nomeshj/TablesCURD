@@ -140,9 +140,11 @@ public class index extends HttpServlet {
 							start = 50 * (Integer.parseInt(request.getParameter("page")) - 1);
 						}
 					}
+					ResultSet rs4 = st.executeQuery("select * from "+table);
+					ResultSetMetaData rsmd1 = rs4.getMetaData();
 					query = "SELECT * FROM (\r\n" + "    SELECT\r\n" + "      ord.*,\r\n"
-							+ "      row_number() over (ORDER BY ord.EMPNO ASC) line_number\r\n"
-							+ "    FROM emp ord\r\n" + " \r\n" + "  ) WHERE line_number BETWEEN " + start + " AND "
+							+ "      row_number() over (ORDER BY ord."+rsmd1.getColumnName(1)+" ASC) line_number\r\n"
+							+ "    FROM "+table+" ord\r\n" + " \r\n" + "  ) WHERE line_number BETWEEN " + start + " AND "
 							+ end + "  ORDER BY line_number";
 				} else {
 					query = "select * from " + table;
